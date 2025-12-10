@@ -1,0 +1,653 @@
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+  const SUPABASE_URL = "https://gdbaibwpievncdjbzblu.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYmFpYndwaWV2bmNkamJ6Ymx1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzODM3OTMsImV4cCI6MjA4MDk1OTc5M30.u8H0NwRupc0fvQEBRxWJ0uru1dVjLFXv-FDsjMLpjY8";
+  const BUCKET = "sevenbrave-photos";
+  const EDIT_PASSWORD = "sevenbrave"; // password edit sorotan & upload
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // DOM
+  const countdownEl = document.getElementById("countdownText");
+  const highlightsStrip = document.getElementById("highlightsStrip");
+  const galleryGrid = document.getElementById("galleryGrid");
+  const unlockBtn = document.getElementById("unlockBtn");
+  const uploadBox = document.getElementById("uploadBox");
+  const uploadInput = document.getElementById("uploadInput");
+  const uploadText = document.getElementById("uploadText");
+  const uploadStatus = document.getElementById("uploadStatus");
+  const highlightSelect = document.getElementById("highlightSelect");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImg");
+  const lightboxText = document.getElementById("lightboxText");
+  const lightboxClose = document.getElementById("lightboxClose");
+  const taskForm = document.getElementById("taskForm");
+  const taskTitleInput = document.getElementById("taskTitle");
+  const taskSubjectInput = document.getElementById("taskSubject");
+  const taskDueInput = document.getElementById("taskDue");
+  const taskListEl = document.getElementById("taskList");
+  const messageForm = document.getElementById("messageForm");
+  const messageNameInput = document.getElementById("messageName");
+  const messageTextInput = document.getElementById("messageText");
+  const messageListEl = document.getElementById("messageList");
+
+  // ====== COUNTDOWN EVENT (tetap sama) ======
+  const EVENT_NAME = "Ujian Akhir Sekolah";
+  const EVENT_DATE = "2025-03-10";
+
+  function updateCountdown() {
+    if (!countdownEl) return;
+    const now = new Date();
+    const target = new Date(EVENT_DATE + "T00:00:00");
+    const diffMs = target - now;
+    const oneDay = 1000 * 60 * 60 * 24;
+    const days = Math.round(diffMs / oneDay);
+
+    if (isNaN(days)) {
+      countdownEl.textContent = "-";
+      return;
+    }
+
+    if (days > 0) countdownEl.textContent = `${EVENT_NAME} — ${days} hari lagi`;
+    else if (days === 0) countdownEl.textContent = `${EVENT_NAME} — Hari ini!`;
+    else countdownEl.textContent = `${EVENT_NAME} — sudah lewat ${Math.abs(days)} hari`;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 60 * 60 * 1000);
+
+  // ====== STATE SOROTAN (Supabase) ======
+  let highlights = []; // array of {id, name, folder, cover_url}
+  let activeHighlightId = null;
+  let isUnlocked = false;
+
+  // simpan status unlock di browser
+  if (localStorage.getItem("seven_brave_unlocked") === "true") {
+    isUnlocked = true;
+  }
+
+  function applyUnlockUI() {
+    isUnlocked = true;
+    localStorage.setItem("seven_brave_unlocked", "true");
+    if (uploadInput) uploadInput.disabled = false;
+    if (uploadBox) uploadBox.classList.add("upload-box-unlocked");
+    if (uploadText)
+      uploadText.innerHTML =
+        'Klik di sini untuk pilih foto 📸<br><span style="font-size:0.78rem;">Pilih sorotan di dropdown, lalu foto akan masuk ke sorotan itu.</span>';
+    if (uploadStatus) {
+      uploadStatus.textContent = "Status: Terbuka — kamu boleh upload 🎀";
+      uploadStatus.classList.remove("locked");
+      uploadStatus.classList.add("unlocked");
+    }
+    if (unlockBtn) {
+      unlockBtn.textContent = "Sudah Terbuka";
+      unlockBtn.disabled = true;
+    }
+  }
+  if (isUnlocked) applyUnlockUI();
+
+  // ====== HELPER: BUAT SOROTAN DEFAULT KALAU BELUM ADA ======
+  async function ensureDefaultHighlights() {
+    const { data, error } = await supabase
+      .from("highlights")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (error) {
+      console.error("Error load highlights:", error);
+      return;
+    }
+
+    if (data && data.length > 0) {
+      highlights = data;
+      activeHighlightId = data[0].id;
+      return;
+    }
+
+    // kalau kosong, buat default 4 sorotan
+    const defaults = [
+      { name: "Kelas Kita", folder: "kelas-kita" },
+      { name: "Study Tour", folder: "study-tour" },
+      { name: "Lomba", folder: "lomba" },
+      { name: "Random", folder: "random" }
+    ];
+
+    const { data: inserted, error: insertErr } = await supabase
+      .from("highlights")
+      .insert(defaults)
+      .select("*");
+
+    if (insertErr) {
+      console.error("Error insert default highlights:", insertErr);
+      return;
+    }
+
+    highlights = inserted;
+    activeHighlightId = highlights[0]?.id ?? null;
+  }
+
+  async function reloadHighlights() {
+    const { data, error } = await supabase
+      .from("highlights")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (error) {
+      console.error("Error reload highlights:", error);
+      return;
+    }
+    highlights = data || [];
+    if (!activeHighlightId && highlights.length) {
+      activeHighlightId = highlights[0].id;
+    } else if (highlights.length && !highlights.find(h => h.id === activeHighlightId)) {
+      activeHighlightId = highlights[0].id;
+    }
+  }
+
+  function getActiveHighlight() {
+    return highlights.find(h => h.id === activeHighlightId) || null;
+  }
+
+  function renderHighlightsStrip() {
+    if (!highlightsStrip) return;
+    highlightsStrip.innerHTML = "";
+
+    if (!highlights.length) {
+      highlightsStrip.innerHTML =
+        '<span class="muted" style="font-size:.8rem;">Belum ada sorotan. Buka kunci lalu tambah sorotan baru.</span>';
+      return;
+    }
+
+    highlights.forEach(h => {
+      const pill = document.createElement("button");
+      pill.type = "button";
+      pill.className =
+        "highlight-pill" + (h.id === activeHighlightId ? " active" : "");
+      pill.dataset.id = h.id;
+
+      const initial = (h.name || "?").charAt(0).toUpperCase();
+      const hasCover = !!h.cover_url;
+
+      pill.innerHTML = `
+        <div class="highlight-pill-thumb">
+          <div class="highlight-pill-inner">
+            ${
+              hasCover
+                ? `<img src="${h.cover_url}" alt="${h.name}">`
+                : `<span style="font-size:0.75rem;">${initial}</span>`
+            }
+          </div>
+        </div>
+        <div class="highlight-pill-label">${h.name}</div>
+      `;
+
+      pill.addEventListener("click", () => {
+        activeHighlightId = h.id;
+        renderHighlightsStrip();
+        loadAndRenderGallery();
+      });
+
+      highlightsStrip.appendChild(pill);
+    });
+  }
+
+  function fillHighlightSelect() {
+    if (!highlightSelect) return;
+    highlightSelect.innerHTML = "";
+    highlights.forEach(h => {
+      const opt = document.createElement("option");
+      opt.value = String(h.id);
+      opt.textContent = h.name;
+      highlightSelect.appendChild(opt);
+    });
+  }
+
+  async function loadAndRenderGallery() {
+    if (!galleryGrid) return;
+    const active = getActiveHighlight();
+    if (!active) {
+      galleryGrid.innerHTML =
+        '<p class="muted" style="font-size:.85rem;">Belum ada sorotan.</p>';
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("photos")
+      .select("*")
+      .eq("highlight_id", active.id)
+      .order("created_at", { ascending: false });
+
+    galleryGrid.innerHTML = "";
+
+    if (error) {
+      console.error("Error load photos:", error);
+      galleryGrid.innerHTML =
+        '<p class="muted" style="font-size:.85rem;">Gagal memuat foto.</p>';
+      return;
+    }
+
+    if (!data || !data.length) {
+      galleryGrid.innerHTML = `
+        <p class="muted" style="grid-column: 1 / -1; font-size:.85rem;">
+          Belum ada foto di sorotan <span class="highlight">${active.name}</span>.  
+          Buka kunci dan upload foto pertama 🎀
+        </p>`;
+      return;
+    }
+
+    data.forEach(p => {
+      const item = document.createElement("div");
+      item.className = "gallery-item";
+      item.dataset.caption = p.caption || "";
+      item.innerHTML = `
+        <img src="${p.url}" alt="Foto sorotan">
+        <div class="gallery-caption">${p.caption || ""}</div>
+      `;
+      attachLightboxEventsToItem(item);
+      galleryGrid.appendChild(item);
+    });
+  }
+
+  // ====== LIGHTBOX ======
+  function openLightbox(src, caption) {
+    if (!lightbox || !lightboxImg || !lightboxText) return;
+    lightboxImg.src = src;
+    lightboxText.textContent = caption || "";
+    lightbox.style.display = "flex";
+  }
+  function closeLightbox() {
+    if (!lightbox || !lightboxImg || !lightboxText) return;
+    lightbox.style.display = "none";
+    lightboxImg.src = "";
+    lightboxText.textContent = "";
+  }
+  if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+  if (lightbox)
+    lightbox.addEventListener("click", e => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+  function attachLightboxEventsToItem(item) {
+    const img = item.querySelector("img");
+    const caption =
+      item.dataset.caption ||
+      item.querySelector(".gallery-caption")?.textContent ||
+      "";
+    item.addEventListener("click", () => {
+      openLightbox(img.src, caption);
+    });
+  }
+
+  // ====== UNLOCK BUTTON ======
+  if (unlockBtn) {
+    unlockBtn.addEventListener("click", () => {
+      if (isUnlocked) return;
+      const pw = prompt("Masukkan password edit (anak Seven Brave saja):");
+      if (pw === null) return;
+      if (pw === EDIT_PASSWORD) {
+        alert("Berhasil! Fitur upload & edit sorotan aktif 🎉");
+        applyUnlockUI();
+      } else {
+        alert("Password salah 😅");
+      }
+    });
+  }
+
+  // ====== UPLOAD FOTO KE SOROTAN (SUPABASE STORAGE) ======
+  if (uploadBox) {
+    uploadBox.addEventListener("click", () => {
+      if (!isUnlocked) {
+        alert("Fitur upload masih terkunci. Masukkan password kelas dulu 💗");
+        return;
+      }
+      if (!highlightSelect || !highlightSelect.value) {
+        alert("Pilih sorotan dulu di dropdown.");
+        return;
+      }
+      uploadInput?.click();
+    });
+  }
+
+  if (uploadInput) {
+    uploadInput.addEventListener("change", async () => {
+      if (!isUnlocked || !uploadInput.files.length) return;
+
+      const highlightId = Number(highlightSelect.value);
+      const h = highlights.find(x => x.id === highlightId);
+      if (!h) {
+        alert("Sorotan tidak ditemukan.");
+        return;
+      }
+
+      const files = Array.from(uploadInput.files);
+      for (const file of files) {
+        try {
+          const sanitizedName = file.name.replace(/\s+/g, "_");
+          const path = `${h.folder}/${Date.now()}_${sanitizedName}`;
+
+          const { error: uploadErr } = await supabase.storage
+            .from(BUCKET)
+            .upload(path, file, { cacheControl: "3600", upsert: false });
+
+          if (uploadErr) {
+            console.error("Upload error:", uploadErr);
+            alert("Gagal upload salah satu foto.");
+            continue;
+          }
+
+          const { data: publicData } = supabase.storage
+            .from(BUCKET)
+            .getPublicUrl(path);
+          const publicUrl = publicData.publicUrl;
+
+          const caption = "Foto baru ditambahkan oleh anak Seven Brave.";
+          const { error: insertPhotoErr } = await supabase
+            .from("photos")
+            .insert({
+              highlight_id: h.id,
+              url: publicUrl,
+              caption
+            });
+
+          if (insertPhotoErr) {
+            console.error("Insert photo error:", insertPhotoErr);
+          }
+
+          // jadikan foto ini cover sorotan
+          const { error: updateCoverErr } = await supabase
+            .from("highlights")
+            .update({ cover_url: publicUrl })
+            .eq("id", h.id);
+          if (updateCoverErr) {
+            console.error("Update cover error:", updateCoverErr);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      uploadInput.value = "";
+      await reloadHighlights();
+      renderHighlightsStrip();
+      await loadAndRenderGallery();
+      fillHighlightSelect();
+    });
+  }
+
+  // ====== BIKIN TOMBOL TAMBAH / GANTI NAMA / HAPUS SOROTAN ======
+  (function injectHighlightManageButtons() {
+    const gallerySection = document.querySelector(".gallery-section");
+    if (!gallerySection) return;
+    const wrapper = document.querySelector(".highlights-strip-wrapper");
+    if (!wrapper) return;
+
+    const bar = document.createElement("div");
+    bar.className = "upload-row";
+    bar.style.marginTop = "0.2rem";
+    bar.innerHTML = `
+      <button id="addHighlightBtn" class="btn-secondary">+ Sorotan Baru</button>
+      <button id="renameHighlightBtn" class="btn-ghost">Ganti Nama Sorotan Aktif</button>
+      <button id="deleteHighlightBtn" class="btn-ghost">Hapus Sorotan Aktif</button>
+    `;
+    wrapper.parentNode.insertBefore(bar, wrapper.nextSibling);
+
+    const addBtn = document.getElementById("addHighlightBtn");
+    const renameBtn = document.getElementById("renameHighlightBtn");
+    const deleteBtn = document.getElementById("deleteHighlightBtn");
+
+    function checkUnlocked() {
+      if (!isUnlocked) {
+        alert("Masukkan password edit dulu sebelum mengubah sorotan.");
+        return false;
+      }
+      return true;
+    }
+
+    if (addBtn) {
+      addBtn.addEventListener("click", async () => {
+        if (!checkUnlocked()) return;
+        const name = prompt("Nama sorotan baru (misal: Perpisahan, Ramadhan, dll):");
+        if (!name) return;
+        const folder = name.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
+
+        const { data, error } = await supabase
+          .from("highlights")
+          .insert({ name: name.trim(), folder })
+          .select("*")
+          .single();
+        if (error) {
+          alert("Gagal membuat sorotan baru.");
+          console.error(error);
+          return;
+        }
+        await reloadHighlights();
+        activeHighlightId = data.id;
+        renderHighlightsStrip();
+        fillHighlightSelect();
+        loadAndRenderGallery();
+      });
+    }
+
+    if (renameBtn) {
+      renameBtn.addEventListener("click", async () => {
+        if (!checkUnlocked()) return;
+        const active = getActiveHighlight();
+        if (!active) {
+          alert("Belum ada sorotan yang aktif.");
+          return;
+        }
+        const newName = prompt("Nama baru untuk sorotan ini:", active.name);
+        if (!newName) return;
+        const { error } = await supabase
+          .from("highlights")
+          .update({ name: newName.trim() })
+          .eq("id", active.id);
+        if (error) {
+          alert("Gagal mengganti nama sorotan.");
+          console.error(error);
+          return;
+        }
+        await reloadHighlights();
+        renderHighlightsStrip();
+        fillHighlightSelect();
+      });
+    }
+
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", async () => {
+        if (!checkUnlocked()) return;
+        const active = getActiveHighlight();
+        if (!active) {
+          alert("Belum ada sorotan yang aktif.");
+          return;
+        }
+        const yakin = confirm(
+          `Yakin mau hapus sorotan "${active.name}"? Semua foto di dalamnya juga akan hilang dari galeri.`
+        );
+        if (!yakin) return;
+
+        const { error } = await supabase
+          .from("highlights")
+          .delete()
+          .eq("id", active.id);
+        if (error) {
+          alert("Gagal menghapus sorotan.");
+          console.error(error);
+          return;
+        }
+        await reloadHighlights();
+        renderHighlightsStrip();
+        fillHighlightSelect();
+        loadAndRenderGallery();
+      });
+    }
+  })();
+
+  // ====== MASUKAN UNTUK KELAS SEVEN BRAVE (Supabase feedbacks) ======
+  async function loadFeedbacks() {
+    if (!messageListEl) return;
+    const { data, error } = await supabase
+      .from("feedbacks")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(50);
+
+    messageListEl.innerHTML = "";
+
+    if (error) {
+      console.error("Error load feedbacks:", error);
+      messageListEl.innerHTML =
+        '<li class="muted" style="font-size:.8rem;">Gagal memuat masukan.</li>';
+      return;
+    }
+
+    if (!data || !data.length) {
+      messageListEl.innerHTML = `<li class="muted" style="font-size:.8rem;">
+        Belum ada masukan. Jadi yang pertama kasih saran! 📝
+      </li>`;
+      return;
+    }
+
+    data.forEach(msg => {
+      const li = document.createElement("li");
+      li.className = "task-item";
+      const time = msg.created_at ? new Date(msg.created_at) : null;
+      const timeStr =
+        time && !isNaN(time)
+          ? time.toLocaleDateString("id-ID", {
+              day: "2-digit",
+              month: "short"
+            })
+          : "";
+
+      li.innerHTML = `
+        <div class="task-main">
+          <div class="task-title">${msg.name || "Anonim"}</div>
+          <div class="task-meta">
+            "${msg.message}"${timeStr ? " • " + timeStr : ""}
+          </div>
+        </div>
+      `;
+      messageListEl.appendChild(li);
+    });
+  }
+
+  if (messageForm) {
+    messageForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      const name = messageNameInput.value.trim() || "Anonim";
+      const text = messageTextInput.value.trim();
+      if (!text) return;
+
+      const { error } = await supabase.from("feedbacks").insert({
+        name,
+        message: text
+      });
+
+      if (error) {
+        alert("Gagal menyimpan masukan.");
+        console.error(error);
+        return;
+      }
+
+      messageTextInput.value = "";
+      await loadFeedbacks();
+    });
+  }
+
+  // ====== TUGAS (tetap localStorage, nggak usah ke DB biar simple) ======
+  const TASKS_KEY = "seven_brave_tasks";
+  let tasks = [];
+  try {
+    tasks = JSON.parse(localStorage.getItem(TASKS_KEY) || "[]");
+  } catch {
+    tasks = [];
+  }
+  function saveTasks() {
+    localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+  }
+  function formatDday(dueDateStr) {
+    if (!dueDateStr) return "";
+    const today = new Date();
+    const due = new Date(dueDateStr + "T00:00:00");
+    const diffMs = due - today;
+    const oneDay = 1000 * 60 * 60 * 24;
+    const days = Math.round(diffMs / oneDay);
+    if (isNaN(days)) return "";
+    if (days > 0) return `H-${days}`;
+    if (days === 0) return "Hari ini";
+    return `Lewat ${Math.abs(days)} hari`;
+  }
+  function renderTasks() {
+    if (!taskListEl) return;
+    taskListEl.innerHTML = "";
+    if (!tasks.length) {
+      taskListEl.innerHTML =
+        '<li class="muted" style="font-size:.8rem;">Belum ada tugas. Tambah dulu di atas ✏️</li>';
+      return;
+    }
+    tasks.forEach(task => {
+      const li = document.createElement("li");
+      li.className = "task-item";
+      const dday = formatDday(task.dueDate);
+      const overdue = dday.startsWith("Lewat");
+      li.innerHTML = `
+        <div class="task-main">
+          <div class="task-title">${task.title}</div>
+          <div class="task-meta">
+            ${task.subject ? `<span>${task.subject}</span>` : ""}
+            ${task.dueDate ? ` • <span>${task.dueDate}</span>` : ""}
+          </div>
+        </div>
+        <div class="task-actions">
+          ${
+            dday
+              ? `<span class="task-badge ${overdue ? "task-overdue" : ""}">${dday}</span>`
+              : ""
+          }
+          <button class="btn-ghost">Selesai</button>
+        </div>
+      `;
+      const btnDone = li.querySelector("button");
+      btnDone.addEventListener("click", () => {
+        tasks = tasks.filter(t => t.id !== task.id);
+        saveTasks();
+        renderTasks();
+      });
+      taskListEl.appendChild(li);
+    });
+  }
+  if (taskForm) {
+    taskForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const title = taskTitleInput.value.trim();
+      const subject = taskSubjectInput.value.trim();
+      const dueDate = taskDueInput.value;
+      if (!title) return;
+      tasks.unshift({
+        id: Date.now() + "-" + Math.random().toString(16).slice(2),
+        title,
+        subject,
+        dueDate
+      });
+      saveTasks();
+      renderTasks();
+      taskTitleInput.value = "";
+      taskSubjectInput.value = "";
+      taskDueInput.value = "";
+    });
+  }
+
+  // ====== INIT SEMUA ======
+  async function init() {
+    await ensureDefaultHighlights();
+    await reloadHighlights();
+    renderHighlightsStrip();
+    fillHighlightSelect();
+    await loadAndRenderGallery();
+    await loadFeedbacks();
+    renderTasks();
+  }
+
+  init();
+</script>
