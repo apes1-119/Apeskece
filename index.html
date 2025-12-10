@@ -21,9 +21,9 @@
       --red-main: #b91c1c;
       --red-soft: #f97373;
       --red-dark: #7f1d1d;
-      --card-bg: #ffffff;
-      --border-soft: #fecaca;
-      --text-muted: #6b7280;
+      --card-bg: #0b1120;
+      --border-soft: rgba(248, 113, 113, 0.45);
+      --text-muted: #9ca3af;
     }
 
     /* CREDIT BAR PALING ATAS */
@@ -31,10 +31,1607 @@
       text-align: center;
       font-size: 0.75rem;
       padding: 0.35rem 0.75rem;
-      background: #fee2e2;
-      color: #7f1d1d;
-      border-bottom: 1px solid #fecaca;
+      background: #0f172a;
+      color: #fecaca;
+      border-bottom: 1px solid rgba(248, 113, 113, 0.6);
     }
+    .credit-bar span {
+      font-weight: 600;
+    }
+
+    /* NAVBAR */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(15, 23, 42, 0.96);
+      border-bottom: 1px solid rgba(248, 113, 113, 0.6);
+      backdrop-filter: blur(10px);
+    }
+    .topbar-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0.6rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fecaca;
+    }
+    .brand span { color: #f97373; }
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+    }
+    .nav-links a {
+      position: relative;
+      padding-bottom: 0.2rem;
+      color: #e5e7eb;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(to right, #f97373, #b91c1c);
+      transition: width 0.2s ease;
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* HERO */
+    .hero {
+      background:
+        radial-gradient(circle at top left, rgba(248, 113, 113, 0.5), transparent 55%),
+        radial-gradient(circle at top right, rgba(127, 29, 29, 0.9), transparent 60%),
+        #020617;
+      padding: 3.2rem 1.5rem 2.8rem;
+    }
+    .hero-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.4fr);
+      gap: 2.3rem;
+      align-items: center;
+    }
+    .hero-eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fecaca;
+      margin-bottom: 0.4rem;
+    }
+    .hero-title {
+      font-size: clamp(2.2rem, 4.7vw, 3.1rem);
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+      color: #f9fafb;
+    }
+    .hero-title span { color: #fecaca; }
+    .hero-sub {
+      font-size: 0.98rem;
+      color: #e5e7eb;
+      max-width: 32rem;
+      margin-bottom: 1.2rem;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+    }
+    .hero-tag {
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid #fecaca;
+      background: #1f2937;
+      color: #fecaca;
+    }
+
+    .hero-panel {
+      background:
+        radial-gradient(circle at top, rgba(248, 113, 113, 0.25), transparent 65%),
+        #020617;
+      border-radius: 1.1rem;
+      border: 1px solid rgba(248, 113, 113, 0.6);
+      padding: 1.2rem 1.1rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+      font-size: 0.86rem;
+    }
+    .hero-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .hero-panel-title { font-weight: 600; color: #f9fafb; }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      background: #dcfce7;
+      border: 1px solid #22c55e;
+      font-size: 0.72rem;
+      color: #166534;
+    }
+    .hero-pill-dot {
+      width: 7px; height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+      margin-top: 0.6rem;
+    }
+    .stat-card {
+      padding: 0.6rem 0.7rem;
+      border-radius: 0.7rem;
+      background: #0f172a;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .stat-value {
+      margin-top: 0.2rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #f9fafb;
+    }
+
+    /* MAIN LAYOUT */
+    .main {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 2.2rem 1.5rem 3rem;
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
+      gap: 1.8rem;
+      align-items: flex-start;
+    }
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #f9fafb;
+    }
+    .section-sub {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 0.9rem;
+      border: 1px solid var(--border-soft);
+      padding: 1rem 1rem 0.9rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.55rem;
+    }
+    .card-title { font-size: 1rem; font-weight: 600; color: #f9fafb; }
+    .card-tag {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid #fecaca;
+      color: #7f1d1d;
+      background: #fee2e2;
+    }
+    .card-body {
+      font-size: 0.86rem;
+      color: #e5e7eb;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .highlight {
+      color: #fb7185;
+      font-weight: 500;
+    }
+
+    /* STRUKTUR */
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.7rem;
+      margin-top: 0.5rem;
+    }
+    .role-item {
+      padding: 0.7rem 0.75rem;
+      border-radius: 0.7rem;
+      background: #020617;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+    .role-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .role-name {
+      margin-top: 0.18rem;
+      font-weight: 500;
+      color: #f9fafb;
+    }
+
+    /* TABLES */
+    .table-wrapper {
+      border-radius: 0.7rem;
+      border: 1px solid rgba(55, 65, 81, 1);
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .table-scroll { width: 100%; overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      min-width: 400px;
+    }
+    th, td {
+      padding: 0.55rem 0.7rem;
+      border-bottom: 1px solid #1f2937;
+      white-space: nowrap;
+      text-align: left;
+    }
+    thead {
+      background: #111827;
+    }
+    th {
+      font-weight: 600;
+      color: #fecaca;
+    }
+    tbody tr:nth-child(even),
+    tbody tr:nth-child(odd) {
+      background: #020617;
+    }
+    tbody tr:hover { background: rgba(127, 29, 29, 0.6); }
+    .table-note {
+      padding: 0.45rem 0.7rem;
+      font-size: 0.74rem;
+      color: #9ca3af;
+      background: #020617;
+    }
+
+    /* BUTTONS */
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 0.4rem 0.95rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: 0.15s ease;
+      background: linear-gradient(to right, #fb7185, #b91c1c);
+      color: #fef2f2;
+      box-shadow: 0 10px 25px rgba(248, 113, 113, 0.5);
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 35px rgba(248, 113, 113, 0.7);
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-secondary {
+      background: #020617;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      box-shadow: none;
+      color: #e5e7eb;
+      padding-inline: 0.8rem;
+    }
+    .btn-secondary:hover {
+      background: #111827;
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: none;
+      border: 1px solid rgba(75, 85, 99, 1);
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      font-size: 0.72rem;
+      color: #9ca3af;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+    .btn-ghost:hover {
+      background: #111827;
+      color: #f9fafb;
+    }
+
+    /* FORM LIST STYLE (TUGAS, MASUKAN) */
+    .task-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+    }
+    .task-form input {
+      background: #020617;
+      border-radius: 999px;
+      border: 1px solid #4b5563;
+      padding: 0.3rem 0.6rem;
+      font-size: 0.78rem;
+      color: #f9fafb;
+    }
+    .task-form input::placeholder {
+      color: #9ca3af;
+    }
+    .task-form input[type="date"] {
+      padding-right: 0.2rem;
+    }
+    .task-form button {
+      align-self: center;
+      padding: 0.3rem 0.8rem;
+    }
+
+    .task-list {
+      list-style: none;
+      margin-top: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      max-height: 230px;
+      overflow-y: auto;
+    }
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.4rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 0.6rem;
+      background: #020617;
+      border: 1px solid rgba(55, 65, 81, 1);
+      font-size: 0.8rem;
+    }
+    .task-main {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+    .task-title {
+      font-weight: 500;
+      color: #f9fafb;
+    }
+    .task-meta {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+    .task-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      align-items: flex-end;
+    }
+    .task-badge {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 113, 113, 0.8);
+      color: #fecaca;
+      background: rgba(127, 29, 29, 0.5);
+    }
+    .task-overdue {
+      background: rgba(185, 28, 28, 0.7);
+      border-color: #fca5a5;
+      color: #fef2f2;
+    }
+
+    /* UPLOAD ZONE */
+    .upload-section { margin-top: 0.6rem; }
+    .upload-box {
+      margin-top: 0.5rem;
+      padding: 0.9rem 0.8rem;
+      border-radius: 0.8rem;
+      border: 1px dashed rgba(248, 113, 113, 0.7);
+      background: #020617;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+    .upload-box:hover {
+      background: rgba(127, 29, 29, 0.6);
+      border-color: #fb7185;
+    }
+    .upload-box-unlocked {
+      background: rgba(127, 29, 29, 0.6);
+      border-style: solid;
+    }
+    .upload-status {
+      font-size: 0.78rem;
+      margin-top: 0.3rem;
+    }
+    .upload-status.locked { color: #fb7185; }
+    .upload-status.unlocked { color: #bbf7d0; }
+
+    .upload-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.6rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .upload-select {
+      background: #020617;
+      border-radius: 999px;
+      padding: 0.35rem 0.7rem;
+      border: 1px solid rgba(55, 65, 81, 1);
+      color: #f9fafb;
+      font-size: 0.78rem;
+    }
+
+    /* SOROTAN IG */
+    .gallery-section {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem;
+      background:
+        radial-gradient(circle at top, rgba(127, 29, 29, 0.7), transparent 60%),
+        #020617;
+    }
+    .highlights-strip-wrapper {
+      margin-top: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .highlights-strip {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.4rem;
+    }
+    .highlights-strip::-webkit-scrollbar {
+      height: 6px;
+    }
+    .highlights-strip::-webkit-scrollbar-track {
+      background: #111827;
+    }
+    .highlights-strip::-webkit-scrollbar-thumb {
+      background: #fca5a5;
+      border-radius: 999px;
+    }
+
+    .highlight-pill {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      transition: transform 0.15s ease, color 0.15s ease;
+      background: none;
+      border: none;
+    }
+    .highlight-pill-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      padding: 2px;
+      background: conic-gradient(from 220deg, #fb7185, #fecaca, #b91c1c, #fb7185);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .highlight-pill-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      overflow: hidden;
+      background: #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .highlight-pill-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.1);
+    }
+    .highlight-pill-label {
+      text-align: center;
+      max-width: 80px;
+    }
+    .highlight-pill.active {
+      transform: translateY(-2px);
+      color: #fecaca;
+    }
+    .highlight-pill.active .highlight-pill-thumb {
+      background: conic-gradient(from 220deg, #fecaca, #fb7185, #fecaca, #b91c1c);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
+      margin-top: 0.6rem;
+    }
+    .gallery-item {
+      position: relative;
+      border-radius: 0.9rem;
+      overflow: hidden;
+      background: #020617;
+      border: 1px solid rgba(248, 113, 113, 0.7);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.05);
+      transition: transform 0.18s ease, filter 0.18s ease;
+    }
+    .gallery-item:hover {
+      transform: translateY(-3px);
+      border-color: #fb7185;
+      box-shadow: 0 16px 35px rgba(248, 113, 113, 0.6);
+    }
+    .gallery-item:hover img {
+      transform: scale(1.03);
+      filter: saturate(1.2);
+    }
+    .gallery-caption {
+      padding: 0.55rem 0.7rem 0.7rem;
+      font-size: 0.8rem;
+      color: #e5e7eb;
+    }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 1rem;
+    }
+    .lightbox-inner {
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .lightbox-img-wrapper {
+      border-radius: 0.8rem;
+      overflow: hidden;
+      border: 1px solid #fecaca;
+      background: #000;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox-img-wrapper img {
+      max-width: 100%;
+      max-height: 84vh;
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      font-size: 0.85rem;
+      color: #f9fafb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .lightbox-close {
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #fecaca;
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid rgba(55, 65, 81, 1);
+      text-align: center;
+      padding: 1.3rem 1rem 2rem;
+      font-size: 0.78rem;
+      color: #9ca3af;
+      background: #020617;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-panel { order: -1; }
+      .main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    @media (max-width: 640px) {
+      .topbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        row-gap: 0.2rem;
+      }
+      .hero {
+        padding: 2.4rem 1.2rem 2.3rem;
+      }
+      .main, .gallery-section {
+        padding-inline: 1.2rem;
+      }
+      .gallery-item img {
+        height: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CREDIT PALING ATAS -->
+  <div class="credit-bar">
+    Dibuat oleh <span>Darvesh Al Fawwaz</span> — Seven Brave Portal
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">KELAS <span>SEVEN BRAVE</span></div>
+      <nav class="nav-links">
+        <a href="#beranda">Beranda</a>
+        <a href="#struktur">Struktur</a>
+        <a href="#jadwal">Jadwal</a>
+        <a href="#piket">Piket</a>
+        <a href="#biodata">Biodata</a>
+        <a href="#galeri">Galeri</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="beranda">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">Portal Resmi</div>
+        <h1 class="hero-title">Portal Kelas <span>Seven Brave</span></h1>
+        <p class="hero-sub">
+          Satu tempat buat lihat struktur kelas, jadwal pelajaran, jadwal piket, biodata anggota,
+          dan galeri kenangan dengan tema merah elegan khas Seven Brave.
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag">Struktur kelas</span>
+          <span class="hero-tag">Jadwal pelajaran</span>
+          <span class="hero-tag">Piket</span>
+          <span class="hero-tag">Biodata</span>
+          <span class="hero-tag">Sorotan foto</span>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <div class="hero-panel-header">
+          <div class="hero-panel-title">Info Singkat Kelas</div>
+          <div class="hero-pill">
+            <span class="hero-pill-dot"></span>
+            Aktif tahun ajaran 2024 / 2025
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-label">Wali Kelas</div>
+            <div class="stat-value">Bu Guylaine Ouimet</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Ketua Kelas</div>
+            <div class="stat-value">Nama Ketua</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Jumlah Siswa</div>
+            <div class="stat-value">32 siswa</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Event Berikutnya</div>
+            <div class="stat-value" id="countdownText">
+              (menghitung...)
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- KIRI -->
+    <div>
+      <!-- STRUKTUR -->
+      <section id="struktur">
+        <h2 class="section-title">Struktur Kelas</h2>
+        <p class="section-sub">Silakan ganti nama sesuai struktur asli Seven Brave.</p>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Pengurus Inti</div>
+            <span class="card-tag">Struktur Inti</span>
+          </div>
+          <div class="card-body">
+            <div class="role-grid">
+              <div class="role-item">
+                <div class="role-label">Wali Kelas</div>
+                <div class="role-name">Bu Guylaine Ouimet</div>
+              </div>
+              <div class="role-item">
+                <div class="role-label">Ketua Kelas</div>
+                <div class="role-name">Nama Ketua</div>
+              </div>
+              <div class="role-item">
+                <div class="role-label">Wakil Ketua</div>
+                <div class="role-name">Nama Wakil</div>
+              </div>
+              <div class="role-item">
+                <div class="role-label">Sekretaris</div>
+                <div class="role-name">Nama Sekretaris</div>
+              </div>
+              <div class="role-item">
+                <div class="role-label">Bendahara</div>
+                <div class="role-name">Nama Bendahara</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Seksi & Koordinator</div>
+            <span class="card-tag">Kepanitiaan</span>
+          </div>
+          <div class="card-body">
+            <div class="role-grid">
+              <div class="role-item">
+                <div class="role-label">Seksi Kebersihan</div>
+                <div class="role-name">Nama A, Nama B</div>
+              </div>
+              <div class="role-item">
+                <div class="role-label">Seksi Keamanan</div>
+                <div class="role-name">Nama C, Nama D</div>
+              </div>
+              <div class="role-item">
+                <div class="role-label">Seksi Acara</div>
+                <div class="role-name">Nama E, Nama F</div>
+              </div>
+              <div class="role-item">
+                <div class="role-label">Seksi Dokumentasi</div>
+                <div class="role-name">Nama G, Nama H</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JADWAL PELAJARAN SEDERHANA -->
+      <section id="jadwal" style="margin-top: 1.2rem;">
+        <h2 class="section-title">Jadwal Pelajaran</h2>
+        <p class="section-sub">Jadwal mingguan tanpa jam, langsung per mata pelajaran.</p>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Jadwal Senin – Jumat</div>
+            <span class="card-tag">Mingguan</span>
+          </div>
+          <div class="card-body">
+            <div class="table-wrapper">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Hari</th>
+                      <th>Mata Pelajaran</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Senin</td>
+                      <td>Bahasa Indonesia, Bahasa Inggris, Bahasa Arab, PAIBP, IPA</td>
+                    </tr>
+                    <tr>
+                      <td>Selasa</td>
+                      <td>Matematika, IPS, Bahasa Inggris</td>
+                    </tr>
+                    <tr>
+                      <td>Rabu</td>
+                      <td>IPA, PJOK, Prakarya</td>
+                    </tr>
+                    <tr>
+                      <td>Kamis</td>
+                      <td>PAIBP, Bahasa Indonesia, Matematika</td>
+                    </tr>
+                    <tr>
+                      <td>Jumat</td>
+                      <td>Bahasa Arab, IPS, Matematika</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-note">
+                Silakan ubah nama mapel sesuai jadwal asli Seven Brave.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BIODATA ANGGOTA -->
+      <section id="biodata" style="margin-top: 1.2rem;">
+        <h2 class="section-title">Biodata Anggota Kelas</h2>
+        <p class="section-sub">
+          Daftar singkat anggota Seven Brave: nama, tanggal lahir, dan nomor HP yang bisa dihubungi.
+        </p>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">List Biodata</div>
+            <span class="card-tag">Anggota</span>
+          </div>
+          <div class="card-body">
+            <div class="table-wrapper">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama</th>
+                      <th>Tanggal Lahir</th>
+                      <th>Nomor HP</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Nama Siswa 1</td>
+                      <td>01 Januari 2007</td>
+                      <td>08xx-xxxx-xxxx</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Nama Siswa 2</td>
+                      <td>14 Februari 2007</td>
+                      <td>08xx-xxxx-xxxx</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Nama Siswa 3</td>
+                      <td>20 Maret 2007</td>
+                      <td>08xx-xxxx-xxxx</td>
+                    </tr>
+                    <!-- Tambahkan baris berikutnya di sini -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-note">
+                <strong>Catatan:</strong> kalau nomor HP mau dijaga privasinya, bisa pakai nomor orang tua
+                atau tampilkan sebagian saja (misal 4 digit belakang).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- KANAN -->
+    <aside>
+      <!-- PIKET -->
+      <section id="piket">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Jadwal Piket</div>
+            <span class="card-tag">Kebersihan</span>
+          </div>
+          <div class="card-body">
+            <div class="table-wrapper">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Hari</th>
+                      <th>Anggota Piket</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Senin</td><td>Nama 1, Nama 2, Nama 3</td></tr>
+                    <tr><td>Selasa</td><td>Nama 4, Nama 5, Nama 6</td></tr>
+                    <tr><td>Rabu</td><td>Nama 7, Nama 8, Nama 9</td></tr>
+                    <tr><td>Kamis</td><td>Nama 10, Nama 11, Nama 12</td></tr>
+                    <tr><td>Jumat</td><td>Nama 13, Nama 14, Nama 15</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-note">
+                Bisa dibagi per minggu (Minggu ke-1, ke-2, dst) kalau mau lebih rinci.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PENGUMUMAN -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Pengumuman Seven Brave</div>
+          <span class="card-tag">Info</span>
+        </div>
+        <div class="card-body">
+          <p class="muted">Contoh pengumuman:</p>
+          <ul style="font-size:0.83rem; margin-left:1rem; margin-top:0.35rem;">
+            <li>📌 Pengumpulan tugas Fisika: <span class="highlight">Jumat, 10 Januari</span>.</li>
+            <li>📌 Bawa seragam merah lengkap untuk foto kelas hari Senin.</li>
+            <li>📌 Latihan lomba 17-an setiap Rabu sepulang sekolah.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Papan Tugas Kelas -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Daftar Tugas</div>
+          <span class="card-tag">Tugas</span>
+        </div>
+        <div class="card-body">
+          <p class="muted">
+            Catat tugas biar nggak ada yang kelewat. Tersimpan di perangkat ini (bukan server).
+          </p>
+          <form id="taskForm" class="task-form">
+            <input id="taskTitle" type="text" placeholder="Judul tugas" required />
+            <input id="taskSubject" type="text" placeholder="Mapel (opsional)" />
+            <input id="taskDue" type="date" />
+            <button type="submit" class="btn-secondary">+ Tambah</button>
+          </form>
+          <ul id="taskList" class="task-list">
+            <!-- tugas muncul di sini -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- UPLOAD FOTO -->
+      <div class="card upload-section">
+        <div class="card-header">
+          <div class="card-title">Upload Foto Anak Seven Brave</div>
+          <span class="card-tag">Sorotan</span>
+        </div>
+        <div class="card-body">
+          <p class="muted">
+            Hanya yang tahu <span class="highlight">password kelas</span> yang bisa upload foto.
+            Foto & sorotan disimpan di Supabase (server).
+          </p>
+
+          <div class="upload-row">
+            <button id="unlockBtn" class="btn">
+              🔓 Masukkan Password Seven Brave
+            </button>
+
+            <label style="font-size:0.78rem;">
+              Sorotan tujuan:
+              <select id="highlightSelect" class="upload-select">
+                <!-- diisi dari Supabase -->
+              </select>
+            </label>
+          </div>
+
+          <div id="uploadBox" class="upload-box">
+            <div id="uploadText" style="font-size:0.83rem;">
+              🔒 Fitur upload terkunci<br>
+              <span style="font-size:0.78rem;">Klik tombol password di atas dulu</span>
+            </div>
+            <div id="uploadStatus" class="upload-status locked">
+              Status: Terkunci
+            </div>
+            <input type="file" id="uploadInput" accept="image/*" multiple hidden disabled>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- GALERI + MASUKAN -->
+  <section class="gallery-section" id="galeri">
+    <h2 class="section-title">Sorotan Kenangan Seven Brave</h2>
+    <p class="section-sub">
+      Pilih sorotan ala Instagram di bar atas. Foto di bawah mengikuti sorotan yang kamu pilih.
+    </p>
+
+    <!-- MASUKAN -->
+    <div class="card" style="margin-top:1rem; margin-bottom:1.2rem;">
+      <div class="card-header">
+        <div class="card-title">Masukan untuk Kelas Seven Brave</div>
+        <span class="card-tag">Masukan</span>
+      </div>
+      <div class="card-body">
+        <p class="muted">
+          Tulis saran, kritik, atau ide buat Seven Brave. Masukan akan disimpan di Supabase
+          dan bisa dibaca bareng-bareng.
+        </p>
+        <form id="messageForm" class="task-form">
+          <input id="messageName" type="text" placeholder="Namamu (boleh anonim)" />
+          <input id="messageText" type="text" placeholder="Masukan atau saran..." required style="flex:1 1 auto; min-width:120px;" />
+          <button type="submit" class="btn-secondary">Kirim</button>
+        </form>
+        <ul id="messageList" class="task-list" style="margin-top:0.6rem; max-height:200px;">
+          <!-- pesan muncul di sini -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- HIGHLIGHT BAR -->
+    <div class="highlights-strip-wrapper">
+      <div id="highlightsStrip" class="highlights-strip">
+        <!-- Diisi via JS -->
+      </div>
+    </div>
+
+    <!-- GRID FOTO AKTIF -->
+    <div id="galleryGrid" class="gallery-grid">
+      <!-- Diisi via JS -->
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox">
+    <div class="lightbox-inner">
+      <div class="lightbox-img-wrapper">
+        <img id="lightboxImg" src="" alt="Foto kelas besar">
+      </div>
+      <div class="lightbox-caption">
+        <span id="lightboxText"></span>
+        <span id="lightboxClose" class="lightbox-close">Tutup ✕</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    &copy; 2025 Seven Brave Portal — Dibuat dengan HTML, JavaScript, dan banyak nostalgia.
+  </footer>
+
+  <!-- SCRIPT: SUPABASE + LOGIKA -->
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const SUPABASE_URL = "https://gdbaibwpievncdjbzblu.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYmFpYndwaWV2bmNkamJ6Ymx1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzODM3OTMsImV4cCI6MjA4MDk1OTc5M30.u8H0NwRupc0fvQEBRxWJ0uru1dVjLFXv-FDsjMLpjY8";
+
+    const BUCKET = "sevenbrave-photos";
+    const EDIT_PASSWORD = "sevenbrave";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ====== COUNTDOWN EVENT ======
+    const EVENT_NAME = "Ujian Akhir Sekolah";
+    const EVENT_DATE = "2025-03-10";
+
+    function updateCountdown() {
+      const el = document.getElementById("countdownText");
+      if (!el) return;
+      const now = new Date();
+      const target = new Date(EVENT_DATE + "T00:00:00");
+      const diffMs = target - now;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const days = Math.round(diffMs / oneDay);
+      if (isNaN(days)) {
+        el.textContent = "-";
+        return;
+      }
+      if (days > 0) el.textContent = `${EVENT_NAME} — ${days} hari lagi`;
+      else if (days === 0) el.textContent = `${EVENT_NAME} — Hari ini!`;
+      else el.textContent = `${EVENT_NAME} — sudah lewat ${Math.abs(days)} hari`;
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 60 * 60 * 1000);
+
+    // ====== DOM REFERENCES ======
+    const highlightsStrip = document.getElementById("highlightsStrip");
+    const galleryGrid = document.getElementById("galleryGrid");
+    const highlightSelect = document.getElementById("highlightSelect");
+    const uploadBox = document.getElementById("uploadBox");
+    const uploadInput = document.getElementById("uploadInput");
+    const uploadText = document.getElementById("uploadText");
+    const uploadStatus = document.getElementById("uploadStatus");
+    const unlockBtn = document.getElementById("unlockBtn");
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxText = document.getElementById("lightboxText");
+    const lightboxClose = document.getElementById("lightboxClose");
+
+    const messageForm = document.getElementById("messageForm");
+    const messageNameInput = document.getElementById("messageName");
+    const messageTextInput = document.getElementById("messageText");
+    const messageListEl = document.getElementById("messageList");
+
+    const TASKS_KEY = "seven_brave_tasks";
+    const taskForm = document.getElementById("taskForm");
+    const taskTitleInput = document.getElementById("taskTitle");
+    const taskSubjectInput = document.getElementById("taskSubject");
+    const taskDueInput = document.getElementById("taskDue");
+    const taskListEl = document.getElementById("taskList");
+
+    // ====== STATE SOROTAN ======
+    let highlights = [];
+    let activeHighlightId = null;
+    let isUnlocked = false;
+
+    if (localStorage.getItem("seven_brave_unlocked") === "true") {
+      isUnlocked = true;
+    }
+
+    function applyUnlockUI() {
+      isUnlocked = true;
+      localStorage.setItem("seven_brave_unlocked", "true");
+      if (uploadInput) uploadInput.disabled = false;
+      if (uploadBox) uploadBox.classList.add("upload-box-unlocked");
+      if (uploadText)
+        uploadText.innerHTML =
+          'Klik di sini untuk pilih foto 📸<br><span style="font-size:0.78rem;">Pilih sorotan di dropdown, lalu foto akan masuk ke sorotan itu.</span>';
+      if (uploadStatus) {
+        uploadStatus.textContent = "Status: Terbuka — kamu boleh upload 🎀";
+        uploadStatus.classList.remove("locked");
+        uploadStatus.classList.add("unlocked");
+      }
+      if (unlockBtn) {
+        unlockBtn.textContent = "Sudah Terbuka";
+        unlockBtn.disabled = true;
+      }
+    }
+    if (isUnlocked) applyUnlockUI();
+
+    async function ensureDefaultHighlights() {
+      const { data, error } = await supabase
+        .from("highlights")
+        .select("*")
+        .order("id", { ascending: true });
+      if (error) {
+        console.error("Error load highlights:", error);
+        return;
+      }
+      if (data && data.length > 0) {
+        highlights = data;
+        activeHighlightId = data[0].id;
+        return;
+      }
+      const defaults = [
+        { name: "Kelas Kita", folder: "kelas-kita" },
+        { name: "Study Tour", folder: "study-tour" },
+        { name: "Lomba", folder: "lomba" },
+        { name: "Random", folder: "random" }
+      ];
+      const { data: inserted, error: insertErr } = await supabase
+        .from("highlights")
+        .insert(defaults)
+        .select("*");
+      if (insertErr) {
+        console.error("Error insert default highlights:", insertErr);
+        return;
+      }
+      highlights = inserted;
+      activeHighlightId = highlights[0]?.id ?? null;
+    }
+
+    async function reloadHighlights() {
+      const { data, error } = await supabase
+        .from("highlights")
+        .select("*")
+        .order("id", { ascending: true });
+      if (error) {
+        console.error("Error reload highlights:", error);
+        return;
+      }
+      highlights = data || [];
+      if (!activeHighlightId && highlights.length) {
+        activeHighlightId = highlights[0].id;
+      } else if (
+        highlights.length &&
+        !highlights.find((h) => h.id === activeHighlightId)
+      ) {
+        activeHighlightId = highlights[0].id;
+      }
+    }
+
+    function getActiveHighlight() {
+      return highlights.find((h) => h.id === activeHighlightId) || null;
+    }
+
+    function renderHighlightsStrip() {
+      if (!highlightsStrip) return;
+      highlightsStrip.innerHTML = "";
+      if (!highlights.length) {
+        highlightsStrip.innerHTML =
+          '<span class="muted" style="font-size:.8rem;">Belum ada sorotan.</span>';
+        return;
+      }
+      highlights.forEach((h) => {
+        const pill = document.createElement("button");
+        pill.type = "button";
+        pill.className =
+          "highlight-pill" + (h.id === activeHighlightId ? " active" : "");
+        pill.dataset.id = h.id;
+        const initial = (h.name || "?").charAt(0).toUpperCase();
+        pill.innerHTML = `
+          <div class="highlight-pill-thumb">
+            <div class="highlight-pill-inner">
+              ${
+                h.cover_url
+                  ? `<img src="${h.cover_url}" alt="${h.name}">`
+                  : `<span style="font-size:0.75rem;">${initial}</span>`
+              }
+            </div>
+          </div>
+          <div class="highlight-pill-label">${h.name}</div>
+        `;
+        pill.addEventListener("click", () => {
+          activeHighlightId = h.id;
+          renderHighlightsStrip();
+          loadAndRenderGallery();
+        });
+        highlightsStrip.appendChild(pill);
+      });
+    }
+
+    function fillHighlightSelect() {
+      if (!highlightSelect) return;
+      highlightSelect.innerHTML = "";
+      highlights.forEach((h) => {
+        const opt = document.createElement("option");
+        opt.value = String(h.id);
+        opt.textContent = h.name;
+        highlightSelect.appendChild(opt);
+      });
+    }
+
+    async function loadAndRenderGallery() {
+      if (!galleryGrid) return;
+      const active = getActiveHighlight();
+      galleryGrid.innerHTML = "";
+      if (!active) {
+        galleryGrid.innerHTML =
+          '<p class="muted" style="grid-column: 1 / -1; font-size:.85rem;">Belum ada sorotan.</p>';
+        return;
+      }
+      const { data, error } = await supabase
+        .from("photos")
+        .select("*")
+        .eq("highlight_id", active.id)
+        .order("created_at", { ascending: false });
+      if (error) {
+        console.error("Error load photos:", error);
+        galleryGrid.innerHTML =
+          '<p class="muted" style="font-size:.85rem;">Gagal memuat foto.</p>';
+        return;
+      }
+      if (!data || !data.length) {
+        galleryGrid.innerHTML = `
+          <p class="muted" style="grid-column: 1 / -1; font-size:.85rem;">
+            Belum ada foto di sorotan <span class="highlight">${active.name}</span>.
+            Buka kunci dan upload foto pertama 🎀
+          </p>`;
+        return;
+      }
+      data.forEach((p) => {
+        const item = document.createElement("div");
+        item.className = "gallery-item";
+        item.dataset.caption = p.caption || "";
+        item.innerHTML = `
+          <img src="${p.url}" alt="Foto sorotan">
+          <div class="gallery-caption">${p.caption || ""}</div>
+        `;
+        attachLightboxEventsToItem(item);
+        galleryGrid.appendChild(item);
+      });
+    }
+
+    // ====== LIGHTBOX ======
+    function openLightbox(src, caption) {
+      if (!lightbox || !lightboxImg || !lightboxText) return;
+      lightboxImg.src = src;
+      lightboxText.textContent = caption || "";
+      lightbox.style.display = "flex";
+    }
+    function closeLightbox() {
+      if (!lightbox || !lightboxImg || !lightboxText) return;
+      lightbox.style.display = "none";
+      lightboxImg.src = "";
+      lightboxText.textContent = "";
+    }
+    if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+    if (lightbox)
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+    function attachLightboxEventsToItem(item) {
+      const img = item.querySelector("img");
+      const caption =
+        item.dataset.caption ||
+        item.querySelector(".gallery-caption")?.textContent ||
+        "";
+      item.addEventListener("click", () => {
+        openLightbox(img.src, caption);
+      });
+    }
+
+    // ====== UNLOCK & UPLOAD ======
+    if (unlockBtn) {
+      unlockBtn.addEventListener("click", () => {
+        if (isUnlocked) return;
+        const pw = prompt("Masukkan password edit (khusus Seven Brave):");
+        if (pw === null) return;
+        if (pw === EDIT_PASSWORD) {
+          alert("Berhasil! Fitur upload & edit sorotan aktif 🎉");
+          applyUnlockUI();
+        } else {
+          alert("Password salah 😅");
+        }
+      });
+    }
+
+    if (uploadBox) {
+      uploadBox.addEventListener("click", () => {
+        if (!isUnlocked) {
+          alert("Fitur upload masih terkunci. Masukkan password kelas dulu 💗");
+          return;
+        }
+        if (!highlightSelect || !highlightSelect.value) {
+          alert("Pilih sorotan dulu di dropdown.");
+          return;
+        }
+        uploadInput?.click();
+      });
+    }
+
+    if (uploadInput) {
+      uploadInput.addEventListener("change", async () => {
+        if (!isUnlocked || !uploadInput.files.length) return;
+        const highlightId = Number(highlightSelect.value);
+        const h = highlights.find((x) => x.id === highlightId);
+        if (!h) {
+          alert("Sorotan tidak ditemukan.");
+          return;
+        }
+        const files = Array.from(uploadInput.files);
+        for (const file of files) {
+          try {
+            const sanitizedName = file.name.replace(/\s+/g, "_");
+            const path = `${h.folder}/${Date.now()}_${sanitizedName}`;
+            const { error: uploadErr } = await supabase.storage
+              .from(BUCKET)
+              .upload(path, file, { cacheControl: "3600", upsert: false });
+            if (uploadErr) {
+              console.error("Upload error:", uploadErr);
+              alert("Gagal upload salah satu foto.");
+              continue;
+            }
+            const { data: publicData } = supabase.storage
+              .from(BUCKET)
+              .getPublicUrl(path);
+            const publicUrl = publicData.publicUrl;
+            const caption = "Foto baru ditambahkan oleh anak Seven Brave.";
+            const { error: insertPhotoErr } = await supabase
+              .from("photos")
+              .insert({ highlight_id: h.id, url: publicUrl, caption });
+            if (insertPhotoErr) {
+              console.error("Insert photo error:", insertPhotoErr);
+            }
+            const { error: updateCoverErr } = await supabase
+              .from("highlights")
+              .update({ cover_url: publicUrl })
+              .eq("id", h.id);
+            if (updateCoverErr) {
+              console.error("Update cover error:", updateCoverErr);
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        }
+        uploadInput.value = "";
+        await reloadHighlights();
+        renderHighlightsStrip();
+        await loadAndRenderGallery();
+        fillHighlightSelect();
+      });
+    }
+
+    // ====== MASUKAN (feedbacks) ======
+    async function loadFeedbacks() {
+      if (!messageListEl) return;
+      const { data, error } = await supabase
+        .from("feedbacks")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      messageListEl.innerHTML = "";
+      if (error) {
+        console.error("Error load feedbacks:", error);
+        messageListEl.innerHTML =
+          '<li class="muted" style="font-size:.8rem;">Gagal memuat masukan.</li>';
+        return;
+      }
+      if (!data || !data.length) {
+        messageListEl.innerHTML = `<li class="muted" style="font-size:.8rem;">
+          Belum ada masukan. Jadi yang pertama kasih saran! 📝
+        </li>`;
+        return;
+      }
+      data.forEach((msg) => {
+        const li = document.createElement("li");
+        li.className = "task-item";
+        const time = msg.created_at ? new Date(msg.created_at) : null;
+        const timeStr =
+          time && !isNaN(time)
+            ? time.toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "short"
+              })
+            : "";
+        li.innerHTML = `
+          <div class="task-main">
+            <div class="task-title">${msg.name || "Anonim"}</div>
+            <div class="task-meta">
+              "${msg.message}"${timeStr ? " • " + timeStr : ""}
+            </div>
+          </div>
+        `;
+        messageListEl.appendChild(li);
+      });
+    }
+
+    if (messageForm) {
+      messageForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = messageNameInput.value.trim() || "Anonim";
+        const text = messageTextInput.value.trim();
+        if (!text) return;
+        const { error } = await supabase
+          .from("feedbacks")
+          .insert({ name, message: text });
+        if (error) {
+          alert("Gagal menyimpan masukan.");
+          console.error(error);
+          return;
+        }
+        messageTextInput.value = "";
+        await loadFeedbacks();
+      });
+    }
+
+    // ====== TUGAS (LOCAL STORAGE) ======
+    let tasks = [];
+    try {
+      tasks = JSON.parse(localStorage.getItem(TASKS_KEY) || "[]");
+    } catch {
+      tasks = [];
+    }
+    function saveTasks() {
+      localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+    }
+    function formatDday(dueDateStr) {
+      if (!dueDateStr) return "";
+      const today = new Date();
+      const due = new Date(dueDateStr + "T00:00:00");
+      const diffMs = due - today;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const days = Math.round(diffMs / oneDay);
+      if (isNaN(days)) return "";
+      if (days > 0) return `H-${days}`;
+      if (days === 0) return "Hari ini";
+      return `Lewat ${Math.abs(days)} hari`;
+    }
+    function renderTasks() {
+      if (!taskListEl) return;
+      taskListEl.innerHTML = "";
+      if (!tasks.length) {
+        taskListEl.innerHTML =
+          '<li class="muted" style="font-size:.8rem;">Belum ada tugas. Tambah dulu di atas ✏️</li>';
+        return;
+      }
+      tasks.forEach((task) => {
+        const li = document.createElement("li");
+        li.className = "task-item";
+        const dday = formatDday(task.dueDate);
+        const overdue = dday.startsWith("Lewat");
+        li.innerHTML = `
+          <div class="task-main">
+            <div class="task-title">${task.title}</div>
+            <div class="task-meta">
+              ${task.subject ? `<span>${task.subject}</span>` : ""}
+              ${task.dueDate ? ` • <span>${task.dueDate}</span>` : ""}
+            </div>
+          </div>
+          <div class="task-actions">
+            ${
+              dday
+                ? `<span class="task-badge ${overdue ? "task-overdue" : ""}">${dday}</span>`
+                : ""
+            }
+            <button class="btn-ghost">Selesai</button>
+          </div>
+        `;
+        const btnDone = li.querySelector("button");
+        btnDone.addEventListener("click", () => {
+          tasks = tasks.filter((t) => t.id !== task.id);
+          saveTasks();
+          renderTasks();
+        });
+        taskListEl.appendChild(li);
+      });
+    }
+    if (taskForm) {
+      taskForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const title = taskTitleInput.value.trim();
+        const subject = taskSubjectInput.value.trim();
+        const dueDate = taskDueInput.value;
+        if (!title) return;
+        tasks.unshift({
+          id: Date.now() + "-" + Math.random().toString(16).slice(2),
+          title,
+          subject,
+          dueDate
+        });
+        saveTasks();
+        renderTasks();
+        taskTitleInput.value = "";
+        taskSubjectInput.value = "";
+        taskDueInput.value = "";
+      });
+    }
+
+    // ====== INIT ======
+    async function init() {
+      await ensureDefaultHighlights();
+      await reloadHighlights();
+      renderHighlightsStrip();
+      fillHighlightSelect();
+      await loadAndRenderGallery();
+      await loadFeedbacks();
+      renderTasks();
+    }
+    init();
+  </script>
+</body>
+</html>    }
     .credit-bar span {
       font-weight: 600;
     }
