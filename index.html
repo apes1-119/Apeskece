@@ -3,38 +3,621 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seven Brave Portal</title>
+  <title>Portal Kelas Seven Brave</title>
 
-  <!-- STYLE UTAMA -->
+  <!-- FONT & STYLE -->
   <style>
     /* RESET */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #fff5f5;
-      color: #111827;
+      font-family: system-ui, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, rgba(185,28,28,0.4), transparent 60%), #020617;
+      color: #f9fafb;
       line-height: 1.6;
     }
-    a { color: inherit; text-decoration: none; }
 
-    :root {
-      --red-main: #b91c1c;
-      --red-soft: #f97373;
-      --red-dark: #7f1d1d;
-      --card-bg: #0b1120;
-      --border-soft: rgba(248, 113, 113, 0.45);
-      --text-muted: #9ca3af;
-    }
+    a { text-decoration: none; color: inherit; }
 
-    /* CREDIT BAR PALING ATAS */
+    /* CREDIT BAR */
     .credit-bar {
-      text-align: center;
-      font-size: 0.75rem;
-      padding: 0.35rem 0.75rem;
       background: #0f172a;
+      padding: 0.4rem;
+      border-bottom: 1px solid rgba(248,113,113,0.4);
+      text-align: center;
+      font-size: 0.8rem;
       color: #fecaca;
-      border-bottom: 1px solid rgba(248, 113, 113, 0.6);
     }
+
+    /* NAVBAR */
+    .topbar {
+      background: rgba(15,23,42,0.95);
+      border-bottom: 1px solid rgba(248,113,113,0.5);
+      backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 999;
+    }
+    .topbar-inner {
+      max-width: 1160px; margin: auto;
+      padding: 0.8rem 1.4rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .brand { font-weight: 700; font-size: 1.2rem; color: #fecaca; }
+    .brand span { color: #fb7185; }
+    .nav-links { display: flex; gap: 1rem; }
+    .nav-links a { color: #e5e7eb; font-size: 0.9rem; }
+
+    /* HERO */
+    .hero {
+      padding: 3rem 1.5rem;
+      max-width: 1160px;
+      margin: auto;
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: 2fr 1.4fr;
+    }
+    .hero-title { font-size: 2.5rem; font-weight: 800; color: #fecaca; }
+    .hero-sub { color: #d1d5db; font-size: 1rem; margin-top: .6rem; }
+
+    /* PANEL */
+    .panel {
+      background: #0f172a;
+      padding: 1.2rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(248,113,113,0.5);
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    }
+    .panel-title { font-weight: 600; margin-bottom: .5rem; }
+
+    .stats { display: grid; grid-template-columns: repeat(2,1fr); gap: .7rem; }
+    .stat-card {
+      padding: .7rem;
+      background: #1e293b;
+      border: 1px solid rgba(248,113,113,0.3);
+      border-radius: .7rem;
+    }
+    .stat-label { font-size: .7rem; color: #9ca3af; }
+    .stat-value { font-size: .95rem; font-weight: 600; color: #fff; }
+
+    /* MAIN */
+    .main {
+      max-width: 1160px;
+      margin: auto;
+      padding: 2rem 1.5rem;
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: 2fr 1.3fr;
+    }
+
+    .section-title { font-size: 1.3rem; font-weight: 600; margin-bottom: .4rem; }
+    .section-sub { color: #9ca3af; font-size: .85rem; margin-bottom: .7rem; }
+
+    /* CARD */
+    .card {
+      background: #0b1120;
+      padding: 1rem;
+      border-radius: .9rem;
+      border: 1px solid rgba(248,113,113,0.4);
+      margin-bottom: 1rem;
+    }
+    .card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: .6rem;
+    }
+    .card-title { font-size: 1rem; font-weight: 600; }
+    .card-tag {
+      font-size: .75rem;
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      background: #7f1d1d;
+      border: 1px solid #fb7185;
+    }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    th, td { padding: .55rem; border-bottom: 1px solid #334155; }
+    th { color: #fb7185; background: #1e293b; }
+
+    /* ROLE GRID */
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+      gap: .7rem;
+    }
+    .role-item {
+      background: #1e293b;
+      padding: .6rem;
+      border-radius: .6rem;
+      border: 1px solid rgba(248,113,113,0.3);
+    }
+    .role-label { font-size: .7rem; color: #9ca3af; }
+    .role-name { font-size: .9rem; font-weight: 500; }
+
+    /* GALLERY / HIGHLIGHT BAR */
+    .highlights-strip { display: flex; gap: .8rem; overflow-x: auto; padding-bottom: .4rem; }
+    .highlight-pill { background: none; border: none; cursor: pointer; text-align: center; }
+    .highlight-pill-thumb {
+      width: 70px; height: 70px;
+      border-radius: 999px;
+      border: 3px solid #fb7185;
+      overflow: hidden;
+      margin-bottom: .3rem;
+    }
+    .highlight-pill-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .highlight-pill-label { font-size: .75rem; color: #e5e7eb; }
+    .highlight-pill.active .highlight-pill-thumb { border-color: #fecaca; }
+
+    /* GALLERY GRID */
+    .gallery-grid {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+      gap: 1rem;
+    }
+    .gallery-item {
+      border-radius: .8rem;
+      overflow: hidden;
+      background: #111827;
+      border: 1px solid rgba(248,113,113,0.4);
+      cursor: pointer;
+    }
+    .gallery-item img {
+      width: 100%; height: 160px; object-fit: cover;
+    }
+    .gallery-caption {
+      padding: .5rem;
+      font-size: .8rem;
+      color: #d1d5db;
+    }
+
+    /* UPLOAD */
+    .upload-box {
+      padding: 1rem;
+      border-radius: .9rem;
+      border: 2px dashed #fb7185;
+      text-align: center;
+      cursor: pointer;
+      margin-top: .7rem;
+    }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      justify-content: center; align-items: center;
+      z-index: 9999;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 85%;
+      border-radius: .8rem;
+      border: 2px solid #fb7185;
+    }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 30px;
+      font-size: 1.5rem; color: #fff; cursor: pointer;
+    }
+  </style>
+
+  <!-- SUPABASE LIBRARY -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <!-- CREDIT -->
+  <div class="credit-bar">
+    Dibuat oleh <b>Seven Brave Dev Team</b> — bisa kamu rename nanti
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Seven <span>Brave</span></div>
+      <nav class="nav-links">
+        <a href="#beranda">Beranda</a>
+        <a href="#struktur">Struktur</a>
+        <a href="#jadwal">Jadwal</a>
+        <a href="#piket">Piket</a>
+        <a href="#biodata">Biodata</a>
+        <a href="#galeri">Galeri</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="beranda">
+    <div>
+      <h1 class="hero-title">Portal Kelas <span>Seven Brave</span></h1>
+      <p class="hero-sub">
+        Website resmi kelas — jadwal, struktur, piket, biodata, galeri, dan fitur upload ala Instagram ✨
+      </p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Info Singkat Kelas</div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-label">Wali Kelas</div>
+          <div class="stat-value">Bu Guylaine Ouimet</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Ketua Kelas</div>
+          <div class="stat-value">Nama Ketua</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Jumlah Siswa</div>
+          <div class="stat-value">32 Siswa</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Event Berikutnya</div>
+          <div class="stat-value">Segera</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ====== KIRI ====== -->
+    <div>
+
+      <!-- STRUKTUR -->
+      <section id="struktur">
+        <h2 class="section-title">Struktur Kelas</h2>
+        <p class="section-sub">Silakan rename nanti sesuai data asli kelas.</p>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Pengurus Inti</div>
+            <span class="card-tag">Inti</span>
+          </div>
+
+          <div class="role-grid">
+            <div class="role-item">
+              <div class="role-label">Wali Kelas</div>
+              <div class="role-name">Bu Guylaine Ouimet</div>
+            </div>
+            <div class="role-item">
+              <div class="role-label">Ketua Kelas</div>
+              <div class="role-name">Nama Ketua</div>
+            </div>
+            <div class="role-item">
+              <div class="role-label">Wakil Ketua</div>
+              <div class="role-name">Nama Wakil</div>
+            </div>
+            <div class="role-item">
+              <div class="role-label">Sekretaris</div>
+              <div class="role-name">Nama Sekretaris</div>
+            </div>
+            <div class="role-item">
+              <div class="role-label">Bendahara</div>
+              <div class="role-name">Nama Bendahara</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JADWAL -->
+      <section id="jadwal">
+        <h2 class="section-title">Jadwal Pelajaran</h2>
+        <p class="section-sub">Tanpa jam pelajaran, dibuat lebih ringkas.</p>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Mingguan</div>
+            <span class="card-tag">Jadwal</span>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr><th>Hari</th><th>Mata Pelajaran</th><th>Guru</th><th>Ruang</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Senin</td><td>Bahasa Indonesia, Inggris, Arab, PAIBP, IPA</td><td>Guru A</td><td>Kelas</td></tr>
+                <tr><td>Selasa</td><td>Matematika, IPS, Seni Budaya, PJOK</td><td>Guru B</td><td>Kelas</td></tr>
+                <tr><td>Rabu</td><td>IPA Praktikum, Bahasa Inggris</td><td>Guru C</td><td>Lab</td></tr>
+                <tr><td>Kamis</td><td>IPA, IPS, Matematika, PAIBP, Bahasa Indonesia</td><td>Guru D</td><td>Kelas</td></tr>
+                <tr><td>Jumat</td><td>PAIBP, Bahasa Arab, Matematika</td><td>Guru E</td><td>Kelas</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- BIODATA -->
+      <section id="biodata">
+        <h2 class="section-title">Biodata Anggota</h2>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Daftar Siswa</div>
+            <span class="card-tag">Biodata</span>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr><th>No</th><th>Nama</th><th>Tanggal Lahir</th><th>Nomor HP</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>Nama Siswa 1</td><td>01-01-2007</td><td>08xx</td></tr>
+                <tr><td>2</td><td>Nama Siswa 2</td><td>01-02-2007</td><td>08xx</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ====== KANAN ====== -->
+    <aside>
+
+      <!-- PIKET -->
+      <section id="piket">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Jadwal Piket</div>
+            <span class="card-tag">Kebersihan</span>
+          </div>
+
+          <table>
+            <thead><tr><th>Hari</th><th>Anggota</th></tr></thead>
+            <tbody>
+              <tr><td>Senin</td><td>Nama 1, Nama2</td></tr>
+              <tr><td>Selasa</td><td>Nama 3, Nama 4</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PENGUMUMAN -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Pengumuman</div>
+          <span class="card-tag">Info</span>
+        </div>
+        <ul>
+          <li>📌 Contoh pengumuman 1</li>
+          <li>📌 Contoh pengumuman 2</li>
+        </ul>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- GALERI -->
+  <section id="galeri" class="main">
+    <div>
+      <h2 class="section-title">Sorotan & Galeri</h2>
+      <p class="section-sub">Foto disimpan di Supabase — bisa dilihat seluruh kelas 🎉</p>
+
+      <!-- HIGHLIGHT BAR -->
+      <div id="highlightsStrip" class="highlights-strip"></div>
+
+      <!-- TOMBOL BUAT SOROTAN -->
+      <button id="newHighlightBtn" style="margin-top:1rem;padding:.5rem 1rem;background:#fb7185;border:none;border-radius:8px;cursor:pointer;color:#fff;">
+        + Sorotan Baru
+      </button>
+
+      <!-- UPLOAD -->
+      <div id="uploadBox" class="upload-box">
+        <div id="uploadText">🔒 Masukkan Password untuk Upload Foto</div>
+        <input id="uploadInput" type="file" accept="image/*" multiple hidden disabled>
+        <div id="uploadStatus" class="upload-status locked" style="margin-top:.5rem;color:#fb7185;">
+          Status: Terkunci
+        </div>
+        <button id="unlockBtn" style="margin-top:.7rem;padding:.5rem 1rem;background:#fb7185;color:#fff;border:none;border-radius:8px;cursor:pointer;">
+          Masukkan Password Kelas
+        </button>
+      </div>
+
+      <!-- GALERI GRID -->
+      <div id="galleryGrid" class="gallery-grid"></div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox">
+    <span id="lightboxClose" class="lightbox-close">✕</span>
+    <img id="lightboxImg" src="">
+    <div id="lightboxText" style="margin-top:1rem;text-align:center;color:#fff;"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="credit-bar" style="margin-top:3rem;">
+    ©2025 Seven Brave — Website kelas.
+  </footer>
+
+<!-- ============================================================= -->
+<!-- =====================  SCRIPT SUPABASE  ====================== -->
+<!-- ============================================================= -->
+
+<script>
+const supabase = window.supabase.createClient(
+  "https://dmsdnqckeqmxcauimhfm.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtc2RucWNrZXFteGNhdWltaGZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzODYzMzgsImV4cCI6MjA4MDk2MjMzOH0.t8sVi3AuRfrmBUgT5GWuJ1X2HFph9bpB-sqjlaDuHAY"
+);
+
+const BUCKET = "sevenbrave-photos";
+
+let activeHighlightId = null;
+const highlightsStrip = document.getElementById("highlightsStrip");
+const galleryGrid = document.getElementById("galleryGrid");
+
+const uploadInput = document.getElementById("uploadInput");
+const uploadBox = document.getElementById("uploadBox");
+const uploadText = document.getElementById("uploadText");
+const uploadStatus = document.getElementById("uploadStatus");
+const unlockBtn = document.getElementById("unlockBtn");
+const newHighlightBtn = document.getElementById("newHighlightBtn");
+
+let isUnlocked = false;
+const CLASS_PASSWORD = "sevenbrave";
+
+/* PASSWORD */
+if (localStorage.getItem("seven_unlock") === "true") unlockUpload();
+
+unlockBtn.onclick = () => {
+  const pw = prompt("Password kelas?");
+  if (pw?.trim().toLowerCase() === CLASS_PASSWORD) {
+    localStorage.setItem("seven_unlock","true");
+    unlockUpload();
+  } else alert("Salah password!");
+};
+
+function unlockUpload() {
+  isUnlocked = true;
+  uploadInput.disabled = false;
+  uploadBox.classList.add("upload-box-unlocked");
+  uploadStatus.textContent = "Terbuka — Siap Upload";
+  uploadStatus.style.color = "#22c55e";
+  uploadText.textContent = "Klik di sini untuk pilih foto 📸";
+  unlockBtn.disabled = true;
+  unlockBtn.textContent = "Sudah Terbuka";
+}
+
+/* LOAD HIGHLIGHTS */
+async function loadHighlights() {
+  const { data } = await supabase.from("highlights").select("*").order("created_at");
+  renderHighlightsStrip(data);
+
+  if (!activeHighlightId && data.length) {
+    activeHighlightId = data[0].id;
+  }
+
+  loadGallery();
+}
+
+/* RENDER HIGHLIGHT STRIP */
+function renderHighlightsStrip(list) {
+  highlightsStrip.innerHTML = "";
+
+  list.forEach(h => {
+    const pill = document.createElement("button");
+    pill.className = "highlight-pill" + (h.id === activeHighlightId ? " active" : "");
+    pill.innerHTML = `
+      <div class="highlight-pill-thumb">
+        <div class="highlight-pill-inner">
+          <img src="${h.cover_url || 'https://via.placeholder.com/300?text=No+Cover'}">
+        </div>
+      </div>
+      <div class="highlight-pill-label">${h.name}</div>
+    `;
+
+    pill.onclick = () => {
+      activeHighlightId = h.id;
+      loadGallery();
+      renderHighlightsStrip(list);
+    };
+
+    pill.ondblclick = async () => {
+      const newName = prompt("Nama sorotan baru:", h.name);
+      if (!newName) return;
+      await supabase.from("highlights").update({ name: newName }).eq("id", h.id);
+      loadHighlights();
+    };
+
+    highlightsStrip.appendChild(pill);
+  });
+}
+
+/* BUAT HIGHLIGHT BARU */
+newHighlightBtn.onclick = async () => {
+  const name = prompt("Nama sorotan baru:");
+  if (!name) return;
+  const { data } = await supabase.from("highlights").insert({ name }).select().single();
+  activeHighlightId = data.id;
+  loadHighlights();
+};
+
+/* LOAD GALLERY */
+async function loadGallery() {
+  galleryGrid.innerHTML = "";
+
+  if (!activeHighlightId) return;
+
+  const { data } = await supabase
+    .from("photos")
+    .select("*")
+    .eq("highlight_id", activeHighlightId)
+    .order("created_at", { ascending: false });
+
+  if (!data.length) {
+    galleryGrid.innerHTML = `<p class="muted" style="grid-column:1/-1">Belum ada foto</p>`;
+    return;
+  }
+
+  data.forEach(photo => {
+    const item = document.createElement("div");
+    item.className = "gallery-item";
+    item.innerHTML = `
+      <img src="${photo.url}">
+      <div class="gallery-caption">${photo.caption || ""}</div>
+    `;
+    item.onclick = () => openLightbox(photo.url, photo.caption);
+    galleryGrid.appendChild(item);
+  });
+}
+
+/* UPLOAD FOTO */
+uploadBox.onclick = () => {
+  if (!isUnlocked) return alert("Masukkan password dulu.");
+  uploadInput.click();
+};
+
+uploadInput.onchange = async () => {
+  const files = [...uploadInput.files];
+  if (!files.length) return;
+
+  for (const file of files) {
+    const path = `${activeHighlightId}/${Date.now()}-${file.name}`;
+
+    const { error } = await supabase.storage.from(BUCKET).upload(path, file);
+    if (error) {
+      alert("Upload gagal");
+      return;
+    }
+
+    const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(path);
+    const url = pub.publicUrl;
+
+    await supabase.from("photos").insert({
+      highlight_id: activeHighlightId,
+      url,
+      caption: "Foto baru"
+    });
+
+    await supabase.from("highlights").update({ cover_url: url }).eq("id", activeHighlightId);
+  }
+
+  loadHighlights();
+};
+
+/* LIGHTBOX */
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const lightboxText = document.getElementById("lightboxText");
+const lightboxClose = document.getElementById("lightboxClose");
+
+function openLightbox(src, caption) {
+  lightbox.style.display = "flex";
+  lightboxImg.src = src;
+  lightboxText.textContent = caption || "";
+}
+lightboxClose.onclick = () => (lightbox.style.display = "none");
+lightbox.onclick = e => { if (e.target === lightbox) lightbox.style.display = "none"; };
+
+/* INIT */
+loadHighlights();
+</script>
+
+</body>
+</html>    }
     .credit-bar span {
       font-weight: 600;
     }
